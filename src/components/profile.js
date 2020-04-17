@@ -1,7 +1,12 @@
 import React from "react";
 import {Link} from "gatsby";
+import {useIdentityContext} from "react-netlify-identity";
 
-export const Profile = () => {
+export const Profile = ({showModal}) => {
+  const identity = useIdentityContext();
+  const isLoggedId = identity && identity.isLoggedIn;
+  const {user} = identity;
+
   return (
     <div className="dashboard-header">
       <nav>
@@ -12,7 +17,12 @@ export const Profile = () => {
           See your base
         </Link>
       </nav>
-      <span>TODO show login status</span>
+      {isLoggedId && (
+        <span>
+          {user.user_metadata.full_name}{" "}
+          <button onClick={() => showModal(true)}>Logout</button>
+        </span>
+      )}
     </div>
   );
 };
